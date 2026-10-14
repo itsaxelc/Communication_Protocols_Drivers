@@ -1,0 +1,3 @@
+D:/i2c_driver/build/CMakeFiles/i2c_test.dir
+D:/i2c_driver/build/CMakeFiles/edit_cache.dir
+D:/i2c_driver/build/CMakeFiles/rebuild_cache.dir

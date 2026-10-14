@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/i2c_driver/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

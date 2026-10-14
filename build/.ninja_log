@@ -1,0 +1,16 @@
+# ninja log v7
+4	465	8130667463895810	CMakeFiles/i2c_test.elf.dir/main.c.obj	e9473bb2d5856463
+131	541	8130667465087337	CMakeFiles/i2c_test.elf.dir/system.c.obj	73bbf1b4988db882
+95	535	8130667464787180	CMakeFiles/i2c_test.elf.dir/i2c1.c.obj	55bce681fc20061a
+235	629	8130667466273363	CMakeFiles/i2c_test.elf.dir/startup_stm32l476xx.s.obj	c00c71a3daec0528
+630	1802	8130667470219077	i2c_test.elf.elf	b7cdf9845a3d0d19
+3	237	8135873954497415	CMakeFiles/i2c_test.dir/main.c.obj	edd1d00e77ad4b5c
+261	1209	8131186358841050	CMakeFiles/i2c_test.dir/system.c.obj	c193fcc177344ed7
+499	1275	8131186361234341	CMakeFiles/i2c_test.dir/startup_stm32l476xx.s.obj	b54b59b62a0c8cbe
+98	1230	8131186357181846	CMakeFiles/i2c_test.dir/i2c1.c.obj	483c4419e92704ec
+237	1389	8135873956837091	i2c_test.elf	7dfe97d8351a2792
+173	1228	8131186357939509	CMakeFiles/i2c_test.dir/lcd1602.c.obj	f3d9b90e9b209a29
+70	1648	8134302116548731	CMakeFiles/i2c_test.dir/usart1.c.obj	3d22197605b38d24
+51	401	8135868795624830	CMakeFiles/i2c_test.dir/usart2.c.obj	5cc9acc8966a3478
+3	235	8135874297669432	CMakeFiles/i2c_test.dir/main.c.obj	edd1d00e77ad4b5c
+235	1449	8135874299916181	i2c_test.elf	7dfe97d8351a2792

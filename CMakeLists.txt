@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(${PROJECT_NAME}
     main.c
-    usart2.c
+    UART/usart2.c
     system.c
     startup_stm32l476xx.s
 )

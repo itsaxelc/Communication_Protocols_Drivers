@@ -29,7 +29,7 @@ int main(void)
     }
 }
 */
-#include "usart2.h"
+#include "UART/usart2.h"
 #include <stdint.h>
 
 int main(void)

@@ -106,9 +106,9 @@ typedef struct
 
 typedef struct
 {
-    float accelX_g;
-    float accelY_g;
-    float accelZ_g;
+    float accelX_mps2;
+    float accelY_mps2;
+    float accelZ_mps2;
 
     float temperature_c;
 
@@ -131,6 +131,23 @@ I2C_Status MPU9250_ReadWhoAmI(uint8_t *id);
 
 I2C_Status MPU9250_Init(void);
 I2C_Status MPU9250_ReadAccelGyro(MPU9250_RawData *data);
+
+/**
+    @brief Converts raw MPU9250 measurements into physical units.
+
+    Converts accelerometer readings into meter per seconds squared (mps2), gyroscope readings
+    into degrees per second (°/s), and temperature into degrees Celsius (°C).
+    
+    Conversion factors depend on the sensor configuration:
+    - Accelerometer: ±2 g  -> 16384 LSB/g
+    - Gyroscope:     ±250 °/s -> 131 LSB/(°/s)
+    - Temperature:   333.87 LSB/°C with a 21 °C reference offset
+
+    @param raw Pointer to the raw sensor measurements. Must not be NULL.
+    @param data Pointer to the structure receiving converted values. Must not be NULL
+    @note The conversion factors must match the full-scale ranges configured in MPU9250_Init().
+    @warning If either pointer is NULL, the function returns without performing any conversion.
+ */
 void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data);
 
 #endif

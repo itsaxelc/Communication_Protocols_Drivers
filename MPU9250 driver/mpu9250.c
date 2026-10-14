@@ -1,4 +1,5 @@
 #include "mpu9250.h"
+#define MPU9250_GRAVITY            9.80665f
 
 I2C_Status MPU9250_ReadWhoAmI(uint8_t *id)
 {
@@ -146,14 +147,16 @@ void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data)
 {
     if ((raw == 0) || (data == 0)) return;
 
-    data->accelX_g = (float)raw->accelX / 16384.0f;
-    data->accelY_g = (float)raw->accelY / 16384.0f;
-    data->accelZ_g = (float)raw->accelZ / 16384.0f;
+    /* ±2 g -> Sensitivity Scale Factor = 16384 LSB/g */
+    data->accelX_mps2 = (float)(raw->accelX / 16384.0f)*MPU9250_GRAVITY;
+    data->accelY_mps2 = (float)(raw->accelY / 16384.0f)*MPU9250_GRAVITY;
+    data->accelZ_mps2 = (float)(raw->accelZ / 16384.0f)*MPU9250_GRAVITY;
 
-    /* Temperature Sensitivity -> 333.87 LSB/(°/C) with 21°C offset */
-    /* TEMP_degC = ((TEMP_OUT – RoomTemp_Offset) / Temp_Sensitivity) + 21degC */
+    /* Temperature Sensitivity -> 333.87 LSB/(°C) with 21°C offset */
+    /* TEMP_degC = (TEMP_OUT / 333.87) + 21degC */
     data->temperature_c = (float)raw->temperature / 333.87f + 21.0f;
 
+    /* ±250 °/s -> Sensitivity Scale Factor = 131 LSB/(°/s) */
     data->gyroX_dps = (float)raw->gyroX / 131.0f;
     data->gyroY_dps = (float)raw->gyroY / 131.0f;
     data->gyroZ_dps = (float)raw->gyroZ / 131.0f;

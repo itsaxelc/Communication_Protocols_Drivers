@@ -118,6 +118,17 @@ typedef struct
 
 } MPU9250_Data;
 
+/**
+    @brief Reads the WHO_AM_I register of the MPU9250.
+    Reads the device identification register (0x75) via I2C
+    and stores the received value in the variable pointed to by id.
+
+    @param id Pointer to the variable that receives the device ID. Must not be NULL.
+    @return I2C_OK if the I2C transaction succeeds, an error status otherwise.
+    @note The expected WHO_AM_I value for an MPU9250 is 0x71.
+*/
+I2C_Status MPU9250_ReadWhoAmI(uint8_t *id);
+
 I2C_Status MPU9250_Init(void);
 I2C_Status MPU9250_ReadAccelGyro(MPU9250_RawData *data);
 void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data);

@@ -35,26 +35,27 @@
 #define MPU9250_PWR_MGMT_1_CLKSEL_Msk           (0x07UL << MPU9250_PWR_MGMT_1_CLKSEL_Pos)
 
 /* PWR MGMT2 */
-#define MPU9250_PWR_MGMT_2_DISABLE_XA_Pos      5U
-#define MPU9250_PWR_MGMT_2_DISABLE_XA_Msk      (1UL << MPU9250_PWR_MGMT_2_DISABLE_XA_Pos)
+#define MPU9250_PWR_MGMT_2_DISABLE_XA_Pos       5U
+#define MPU9250_PWR_MGMT_2_DISABLE_XA_Msk       (1UL << MPU9250_PWR_MGMT_2_DISABLE_XA_Pos)
 
-#define MPU9250_PWR_MGMT_2_DISABLE_YA_Pos      4U
-#define MPU9250_PWR_MGMT_2_DISABLE_YA_Msk      (1UL << MPU9250_PWR_MGMT_2_DISABLE_YA_Pos)
+#define MPU9250_PWR_MGMT_2_DISABLE_YA_Pos       4U
+#define MPU9250_PWR_MGMT_2_DISABLE_YA_Msk       (1UL << MPU9250_PWR_MGMT_2_DISABLE_YA_Pos)
 
-#define MPU9250_PWR_MGMT_2_DISABLE_ZA_Pos      3U
-#define MPU9250_PWR_MGMT_2_DISABLE_ZA_Msk      (1UL << MPU9250_PWR_MGMT_2_DISABLE_ZA_Pos)
+#define MPU9250_PWR_MGMT_2_DISABLE_ZA_Pos       3U
+#define MPU9250_PWR_MGMT_2_DISABLE_ZA_Msk       (1UL << MPU9250_PWR_MGMT_2_DISABLE_ZA_Pos)
 
-#define MPU9250_PWR_MGMT_2_DISABLE_XG_Pos      2U
-#define MPU9250_PWR_MGMT_2_DISABLE_XG_Msk      (1UL << MPU9250_PWR_MGMT_2_DISABLE_XG_Pos)
+#define MPU9250_PWR_MGMT_2_DISABLE_XG_Pos       2U
+#define MPU9250_PWR_MGMT_2_DISABLE_XG_Msk       (1UL << MPU9250_PWR_MGMT_2_DISABLE_XG_Pos)
 
-#define MPU9250_PWR_MGMT_2_DISABLE_YG_Pos      1U
-#define MPU9250_PWR_MGMT_2_DISABLE_YG_Msk      (1UL << MPU9250_PWR_MGMT_2_DISABLE_YG_Pos)
+#define MPU9250_PWR_MGMT_2_DISABLE_YG_Pos       1U
+#define MPU9250_PWR_MGMT_2_DISABLE_YG_Msk       (1UL << MPU9250_PWR_MGMT_2_DISABLE_YG_Pos)
 
-#define MPU9250_PWR_MGMT_2_DISABLE_ZG_Pos      0U
-#define MPU9250_PWR_MGMT_2_DISABLE_ZG_Msk      (1UL << MPU9250_PWR_MGMT_2_DISABLE_ZG_Pos)
+#define MPU9250_PWR_MGMT_2_DISABLE_ZG_Pos       0U
+#define MPU9250_PWR_MGMT_2_DISABLE_ZG_Msk       (1UL << MPU9250_PWR_MGMT_2_DISABLE_ZG_Pos)
 
 
-#define MPU9250_REG_WHO_AM_I    0x75U
+#define MPU9250_REG_WHO_AM_I                    0x75U
+#define MPU9250_WHO_AM_I_VALUE                  0x71U
 
 
 #define MPU9250_GYRO_CONFIG_GYRO_FS_SEL_Pos    3U
@@ -89,6 +90,14 @@
 #define MPU9250_REG_GYRO_ZOUT_H                     0x47
 #define MPU9250_REG_GYRO_ZOUT_L                     0x48
 
+#define MPU9250_REG_USER_CTRL       0x6AU
+#define MPU9250_REG_INT_PIN_CFG     0x37U
+
+#define MPU9250_USER_CTRL_I2C_MST_EN_Pos            5U
+#define MPU9250_USER_CTRL_I2C_MST_EN_Msk            (1U << MPU9250_USER_CTRL_I2C_MST_EN_Pos)
+
+#define MPU9250_INT_PIN_CFG_BYPASS_EN_Pos           1U
+#define MPU9250_INT_PIN_CFG_BYPASS_EN_Msk           (1U << MPU9250_INT_PIN_CFG_BYPASS_EN_Pos)
 
 typedef struct
 {
@@ -149,6 +158,8 @@ I2C_Status MPU9250_ReadAccelGyro(MPU9250_RawData *data);
     @warning If either pointer is NULL, the function returns without performing any conversion.
  */
 void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data);
+
+I2C_Status MPU9250_EnableBypass(void);
 
 #endif
 

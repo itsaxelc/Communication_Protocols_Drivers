@@ -161,3 +161,19 @@ void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data)
     data->gyroY_dps = (float)raw->gyroY / 131.0f;
     data->gyroZ_dps = (float)raw->gyroZ / 131.0f;
 }
+
+I2C_Status MPU9250_EnableBypass(void)
+{
+    I2C_Status status;
+    uint8_t value;
+    /* Disable the MPU9250 internal I2C master */
+    status = MPU9250_WriteRegister(MPU9250_REG_USER_CTRL, 0x00U);
+
+    if (status != I2C_OK) return status;
+
+    /* Enable direct access to the AK8963 */
+    value = MPU9250_INT_PIN_CFG_BYPASS_EN_Msk;
+    status = MPU9250_WriteRegister(MPU9250_REG_INT_PIN_CFG, value);
+
+    return status;
+}

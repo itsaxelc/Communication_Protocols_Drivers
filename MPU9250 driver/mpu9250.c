@@ -18,7 +18,7 @@ I2C_Status MPU9250_Init(void)
     /* Verify device identity */
     status = MPU9250_ReadWhoAmI(&id);
     if (status != I2C_OK) return status;
-    if (id != 0x71U) return I2C_ERROR;
+    if (id != MPU9250_WHO_AM_I_VALUE) return I2C_ERROR;
 
     /* ------------------------------------------
        PWR_MGMT_1

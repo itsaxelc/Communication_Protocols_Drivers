@@ -115,15 +115,15 @@ typedef struct
 
 typedef struct
 {
-    float accelX_mps2;
-    float accelY_mps2;
-    float accelZ_mps2;
+    float accelX;
+    float accelY;
+    float accelZ;
 
     float temperature_c;
 
-    float gyroX_dps;
-    float gyroY_dps;
-    float gyroZ_dps;
+    float gyroX;
+    float gyroY;
+    float gyroZ;
 
     float magX;
     float magY;
@@ -160,6 +160,10 @@ I2C_Status MPU9250_Init(void);
     @warning If either pointer is NULL, the function returns without performing any conversion.
  */
 I2C_Status MPU9250_GetData(MPU9250_Data *data);
+
+I2C_Status MPU9250_GetGyroData(float *gyroX, float *gyroY, float *gyroZ);
+I2C_Status MPU9250_GetAccelData(float *accelX, float *accelY, float *accelZ);
+I2C_Status MPU9250_GetMagData(float *magX, float *magY, float *magZ);
 
 I2C_Status MPU9250_EnableBypass(void);
 

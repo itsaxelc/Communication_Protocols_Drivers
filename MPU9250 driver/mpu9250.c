@@ -159,18 +159,18 @@ I2C_Status MPU9250_GetData(MPU9250_Data *data)
     if (status != I2C_OK) return status;
 
     /* ±2 g -> Sensitivity Scale Factor = 16384 LSB/g */
-    data->accelX_mps2 = (float)(raw.accelX / 16384.0f)*MPU9250_GRAVITY;
-    data->accelY_mps2 = (float)(raw.accelY / 16384.0f)*MPU9250_GRAVITY;
-    data->accelZ_mps2 = (float)(raw.accelZ / 16384.0f)*MPU9250_GRAVITY;
+    data->accelX = (float)(raw.accelX / 16384.0f)*MPU9250_GRAVITY;
+    data->accelY = (float)(raw.accelY / 16384.0f)*MPU9250_GRAVITY;
+    data->accelZ = (float)(raw.accelZ / 16384.0f)*MPU9250_GRAVITY;
 
     /* Temperature Sensitivity -> 333.87 LSB/(°C) with 21°C offset */
     /* TEMP_degC = (TEMP_OUT / 333.87) + 21degC */
     data->temperature_c = (float)raw.temperature / 333.87f + 21.0f;
 
     /* ±250 °/s -> Sensitivity Scale Factor = 131 LSB/(°/s) */
-    data->gyroX_dps = (float)raw.gyroX / 131.0f;
-    data->gyroY_dps = (float)raw.gyroY / 131.0f;
-    data->gyroZ_dps = (float)raw.gyroZ / 131.0f;
+    data->gyroX = (float)raw.gyroX / 131.0f;
+    data->gyroY = (float)raw.gyroY / 131.0f;
+    data->gyroZ = (float)raw.gyroZ / 131.0f;
 
     /* Got directly from AK8963 driver, no need of conversion */
     data->magX = ak8963_data.HX;
@@ -194,4 +194,52 @@ I2C_Status MPU9250_EnableBypass(void)
     status = MPU9250_WriteRegister(MPU9250_REG_INT_PIN_CFG, value);
 
     return status;
+}
+
+I2C_Status MPU9250_GetGyroData(float *gyroX, float *gyroY, float *gyroZ){
+    if(gyroX ==NULL || gyroY == NULL || gyroZ == NULL) return I2C_ERROR;
+
+    I2C_Status status;
+    MPU9250_Data data;
+
+    status = MPU9250_GetData(&data);
+    if(status != I2C_OK) return status;
+
+    *gyroX = data.gyroX;
+    *gyroY = data.gyroY;
+    *gyroZ = data.gyroZ;
+
+    return I2C_OK;
+}
+
+I2C_Status MPU9250_GetAccelData(float *accelX, float *accelY, float *accelZ){
+    if(accelX ==NULL || accelY == NULL || accelZ == NULL) return I2C_ERROR;
+
+    I2C_Status status;
+    MPU9250_Data data;
+
+    status = MPU9250_GetData(&data);
+    if(status != I2C_OK) return status;
+
+    *accelX = data.accelX;
+    *accelY = data.accelY;
+    *accelZ = data.accelZ;
+
+    return I2C_OK;
+}
+
+I2C_Status MPU9250_GetMagData(float *magX, float *magY, float *magZ){
+    if(magX ==NULL || magY == NULL || magZ == NULL) return I2C_ERROR;
+
+    I2C_Status status;
+    MPU9250_Data data;
+
+    status = MPU9250_GetData(&data);
+    if(status != I2C_OK) return status;
+
+    *magX = data.magX;
+    *magY = data.magY;
+    *magZ = data.magZ;
+
+    return I2C_OK;
 }

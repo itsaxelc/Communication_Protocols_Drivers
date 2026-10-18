@@ -2,6 +2,10 @@
 #include "ak8963.h"
 #define MPU9250_GRAVITY            9.80665f
 
+/* Forward declaration of static functions */
+static I2C_Status MPU9250_WriteRegister(uint8_t reg, uint8_t value);
+static I2C_Status MPU9250_ReadRegister(uint8_t reg, uint8_t *value);
+
 I2C_Status MPU9250_ReadWhoAmI(uint8_t *id)
 {
     uint8_t reg = MPU9250_REG_WHO_AM_I;
@@ -9,6 +13,20 @@ I2C_Status MPU9250_ReadWhoAmI(uint8_t *id)
     return I2C1_WriteRead(MPU9250_I2C_ADDRESS, &reg, 1U, id, 1U);
 }
 
+static I2C_Status MPU9250_WriteRegister(uint8_t reg, uint8_t value)
+{
+    uint8_t data[2] = {reg, value};
+    return I2C1_Write(MPU9250_I2C_ADDRESS, data, 2U);
+}
+
+static I2C_Status MPU9250_ReadRegister(uint8_t reg, uint8_t *value)
+{
+    if (value == NULL)
+    {
+        return I2C_ERROR;
+    }
+    return I2C1_WriteRead(MPU9250_I2C_ADDRESS, &reg, 1U,value, 1U);
+}
 
 I2C_Status MPU9250_Init(void)
 {

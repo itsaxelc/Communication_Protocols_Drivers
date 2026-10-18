@@ -149,33 +149,33 @@ I2C_Status MPU9250_GetData(MPU9250_Data *data)
     if (data == NULL) return I2C_ERROR;
 
     I2C_Status status;
-    MPU9250_RawData *raw;
-    AK8963_Data *ak8963_data;
+    MPU9250_RawData raw;
+    AK8963_Data ak8963_data;
 
-    status = MPU9250_GetRawData(raw);
+    status = MPU9250_GetRawData(&raw);
     if (status != I2C_OK) return status;
 
-    status = AK8963_GetData(ak8963_data);
+    status = AK8963_GetData(&ak8963_data);
     if (status != I2C_OK) return status;
 
     /* ±2 g -> Sensitivity Scale Factor = 16384 LSB/g */
-    data->accelX_mps2 = (float)(raw->accelX / 16384.0f)*MPU9250_GRAVITY;
-    data->accelY_mps2 = (float)(raw->accelY / 16384.0f)*MPU9250_GRAVITY;
-    data->accelZ_mps2 = (float)(raw->accelZ / 16384.0f)*MPU9250_GRAVITY;
+    data->accelX_mps2 = (float)(raw.accelX / 16384.0f)*MPU9250_GRAVITY;
+    data->accelY_mps2 = (float)(raw.accelY / 16384.0f)*MPU9250_GRAVITY;
+    data->accelZ_mps2 = (float)(raw.accelZ / 16384.0f)*MPU9250_GRAVITY;
 
     /* Temperature Sensitivity -> 333.87 LSB/(°C) with 21°C offset */
     /* TEMP_degC = (TEMP_OUT / 333.87) + 21degC */
-    data->temperature_c = (float)raw->temperature / 333.87f + 21.0f;
+    data->temperature_c = (float)raw.temperature / 333.87f + 21.0f;
 
     /* ±250 °/s -> Sensitivity Scale Factor = 131 LSB/(°/s) */
-    data->gyroX_dps = (float)raw->gyroX / 131.0f;
-    data->gyroY_dps = (float)raw->gyroY / 131.0f;
-    data->gyroZ_dps = (float)raw->gyroZ / 131.0f;
+    data->gyroX_dps = (float)raw.gyroX / 131.0f;
+    data->gyroY_dps = (float)raw.gyroY / 131.0f;
+    data->gyroZ_dps = (float)raw.gyroZ / 131.0f;
 
     /* Got directly from AK8963 driver, no need of conversion */
-    data->magX = ak8963_data->HX;
-    data->magY = ak8963_data->HY;
-    data->magZ = ak8963_data->HZ;
+    data->magX = ak8963_data.HX;
+    data->magY = ak8963_data.HY;
+    data->magZ = ak8963_data.HZ;
 
     return I2C_OK;
 }

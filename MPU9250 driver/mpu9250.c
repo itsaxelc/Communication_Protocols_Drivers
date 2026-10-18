@@ -1,4 +1,5 @@
 #include "mpu9250.h"
+#include "ak8963.h"
 #define MPU9250_GRAVITY            9.80665f
 
 I2C_Status MPU9250_ReadWhoAmI(uint8_t *id)
@@ -119,7 +120,7 @@ I2C_Status MPU9250_Init(void)
 }
 
 
-I2C_Status MPU9250_ReadAccelGyro(MPU9250_RawData *data)
+static I2C_Status MPU9250_GetRawData(MPU9250_RawData *data)
 {
     uint8_t buffer[14];
     uint8_t start_register = MPU9250_REG_ACCEL_XOUT_H;
@@ -143,9 +144,19 @@ I2C_Status MPU9250_ReadAccelGyro(MPU9250_RawData *data)
     return I2C_OK;
 }
 
-void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data)
+I2C_Status MPU9250_GetData(MPU9250_Data *data)
 {
-    if ((raw == 0) || (data == 0)) return;
+    if (data == NULL) return I2C_ERROR;
+
+    I2C_Status status;
+    MPU9250_RawData *raw;
+    AK8963_Data *ak8963_data;
+
+    status = MPU9250_GetRawData(raw);
+    if (status != I2C_OK) return status;
+
+    status = AK8963_GetData(ak8963_data);
+    if (status != I2C_OK) return status;
 
     /* ±2 g -> Sensitivity Scale Factor = 16384 LSB/g */
     data->accelX_mps2 = (float)(raw->accelX / 16384.0f)*MPU9250_GRAVITY;
@@ -160,6 +171,13 @@ void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data)
     data->gyroX_dps = (float)raw->gyroX / 131.0f;
     data->gyroY_dps = (float)raw->gyroY / 131.0f;
     data->gyroZ_dps = (float)raw->gyroZ / 131.0f;
+
+    /* Got directly from AK8963 driver, no need of conversion */
+    data->magX = ak8963_data->HX;
+    data->magY = ak8963_data->HY;
+    data->magZ = ak8963_data->HZ;
+
+    return I2C_OK;
 }
 
 I2C_Status MPU9250_EnableBypass(void)

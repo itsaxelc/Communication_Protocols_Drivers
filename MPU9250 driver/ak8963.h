@@ -55,8 +55,6 @@ typedef struct{
 
 I2C_Status AK8963_Init(void);
 I2C_Status AK8963_ReadWhoAmI(uint8_t *id);
-I2C_Status AK8963_ReadRegister(uint8_t reg, uint8_t *value);
-I2C_Status AK8963_WriteRegister(uint8_t reg, uint8_t value);
-I2C_Status GetData(AK8963_Data *data);
+I2C_Status AK8963_GetData(AK8963_Data *data);
 
 #endif

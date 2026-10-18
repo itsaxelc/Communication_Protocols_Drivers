@@ -125,6 +125,9 @@ typedef struct
     float gyroY_dps;
     float gyroZ_dps;
 
+    float magX;
+    float magY;
+    float magZ;
 } MPU9250_Data;
 
 /**
@@ -139,7 +142,6 @@ typedef struct
 I2C_Status MPU9250_ReadWhoAmI(uint8_t *id);
 
 I2C_Status MPU9250_Init(void);
-I2C_Status MPU9250_ReadAccelGyro(MPU9250_RawData *data);
 
 /**
     @brief Converts raw MPU9250 measurements into physical units.
@@ -157,7 +159,7 @@ I2C_Status MPU9250_ReadAccelGyro(MPU9250_RawData *data);
     @note The conversion factors must match the full-scale ranges configured in MPU9250_Init().
     @warning If either pointer is NULL, the function returns without performing any conversion.
  */
-void MPU9250_ConvertData(const MPU9250_RawData *raw, MPU9250_Data *data);
+I2C_Status MPU9250_GetData(MPU9250_Data *data);
 
 I2C_Status MPU9250_EnableBypass(void);
 

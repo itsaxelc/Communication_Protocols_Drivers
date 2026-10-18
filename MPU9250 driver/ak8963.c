@@ -47,7 +47,7 @@ I2C_Status AK8963_Init(void){
     return I2C_OK;
 }
 
-I2C_Status AK8963_GetRawData(AK8963_RawData *raw_data){
+static I2C_Status AK8963_GetRawData(AK8963_RawData *raw_data){
     if(raw_data == NULL) return I2C_ERROR;
 
     uint8_t value;
@@ -75,7 +75,7 @@ I2C_Status AK8963_GetRawData(AK8963_RawData *raw_data){
     }
 }
 
-I2C_Status GetData(AK8963_Data *data){
+I2C_Status AK8963_GetData(AK8963_Data *data){
     if(data == NULL) return I2C_ERROR;
 
     AK8963_RawData raw_data;
@@ -91,13 +91,13 @@ I2C_Status GetData(AK8963_Data *data){
     else return I2C_ERROR;
 }
 
-I2C_Status AK8963_ReadRegister(uint8_t reg, uint8_t *value)
+static I2C_Status AK8963_ReadRegister(uint8_t reg, uint8_t *value)
 {
     if (value == 0) return I2C_ERROR;
     return I2C1_WriteRead(AK8963_I2C_ADDRESS, &reg, 1U, value, 1U);
 }
 
-I2C_Status AK8963_WriteRegister(uint8_t reg, uint8_t value)
+static I2C_Status AK8963_WriteRegister(uint8_t reg, uint8_t value)
 {
     uint8_t buffer[2];
 

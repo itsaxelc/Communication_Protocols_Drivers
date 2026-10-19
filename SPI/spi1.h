@@ -10,7 +10,6 @@
 
 #define RCC_AHB2ENR                 (*(volatile uint32_t*)(RCC_BASE + 0x4C))               
 #define RCC_APB2ENR                 (*(volatile uint32_t*)(RCC_BASE + 0x60))
-#define RCC_CCIPR                   (*(volatile uint32_t*)(RCC_BASE + 0x88))
 
 #define RCC_AHB2ENR_GPIOAEN_Pos     0U
 #define RCC_APB2ENR_SPI1_Pos        12U
@@ -21,7 +20,7 @@
 #define SPI1_CR1                    (*(volatile uint32_t *)(SPI1_BASE + 0x00))
 #define SPI1_CR2                    (*(volatile uint32_t *)(SPI1_BASE + 0x04))
 #define SPI1_SR                     (*(volatile uint32_t *)(SPI1_BASE + 0x08UL))
-#define SPI1_DR                     (*(volatile uint32_t *)(SPI1_BASE + 0x0CUL))
+#define SPI1_DR                     (*(volatile uint8_t *)(SPI1_BASE + 0x0CUL))
 #define SPI1_CRCPR                  (*(volatile uint32_t *)(SPI1_BASE + 0x10UL))
 #define SPI1_RXCRCR                 (*(volatile uint32_t *)(SPI1_BASE + 0x14UL))
 #define SPI1_TXCRCR                 (*(volatile uint32_t *)(SPI1_BASE + 0x18UL))
@@ -34,12 +33,33 @@
 #define SPI1_CR1_LSBFIRST_Pos       7U
 #define SPI1_CR1_SSI_Pos            8U
 #define SPI1_CR1_SSM_Pos            9U
+
 #define SPI1_CR2_DS_Pos             8U
-#define SPI1_CR2_FRXT_Pos           12U
+#define SPI1_CR2_FRXTH_Pos          12U
+
 #define SPI1_SR_RXNE_Pos            0U
 #define SPI1_SR_TXE_Pos             1U
 #define SPI1_SR_MODF_Pos            5U
 #define SPI1_SR_OVR_Pos             6U
+#define SPI1_SR_BSY_Pos             7U
+
+#define SPI1_CR1_CPHA_Msk       (1UL << SPI1_CR1_CPHA_Pos)
+#define SPI1_CR1_CPOL_Msk       (1UL << SPI1_CR1_CPOL_Pos)
+#define SPI1_CR1_MSTR_Msk       (1UL << SPI1_CR1_MSTR_Pos)
+#define SPI1_CR1_BR_Msk         (7UL << SPI1_CR1_BR_Pos)
+#define SPI1_CR1_SPE_Msk        (1UL << SPI1_CR1_SPE_Pos)
+#define SPI1_CR1_LSBFIRST_Msk   (1UL << SPI1_CR1_LSBFIRST_Pos)
+#define SPI1_CR1_SSI_Msk        (1UL << SPI1_CR1_SSI_Pos)
+#define SPI1_CR1_SSM_Msk        (1UL << SPI1_CR1_SSM_Pos)
+
+#define SPI1_CR2_DS_Msk         (0xFUL << SPI1_CR2_DS_Pos)
+#define SPI1_CR2_FRXTH_Msk      (1UL << SPI1_CR2_FRXTH_Pos)
+
+#define SPI1_SR_RXNE_Msk        (1UL << SPI1_SR_RXNE_Pos)
+#define SPI1_SR_TXE_Msk         (1UL << SPI1_SR_TXE_Pos)
+#define SPI1_SR_MODF_Msk        (1UL << SPI1_SR_MODF_Pos)
+#define SPI1_SR_OVR_Msk         (1UL << SPI1_SR_OVR_Pos)
+#define SPI1_SR_BSY_Msk         (1UL << SPI1_SR_BSY_Pos)
 
 #define GPIOA_MODER                 (*(volatile uint32_t *)(GPIOA_BASE + 0x00UL))
 #define GPIOA_OTYPER                (*(volatile uint32_t *)(GPIOA_BASE + 0x04UL))
@@ -69,7 +89,6 @@ typedef enum
     SPI_OK,
     SPI_ERROR,
     SPI_TIMEOUT,
-    SPI_NACK
 } SPI_Status;
 
 /* SPI1_PINS_NSSpin_SCKpin_MISOpin_MOSIpin options :

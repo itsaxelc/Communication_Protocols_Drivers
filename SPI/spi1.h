@@ -12,9 +12,11 @@
 #define RCC_APB2ENR                 (*(volatile uint32_t*)(RCC_BASE + 0x60))
 
 #define RCC_AHB2ENR_GPIOAEN_Pos     0U
+#define RCC_AHB2ENR_GPIOBEN_Pos     1U
 #define RCC_APB2ENR_SPI1_Pos        12U
 
 #define RCC_AHB2ENR_GPIOAEN_Msk     (1UL << RCC_AHB2ENR_GPIOAEN_Pos)
+#define RCC_AHB2ENR_GPIOBEN_Msk     (1UL << RCC_AHB2ENR_GPIOBEN_Pos)
 #define RCC_APB2ENR_SPI1_Msk        (1UL << RCC_APB2ENR_SPI1_Pos)
 
 #define SPI1_CR1                    (*(volatile uint32_t *)(SPI1_BASE + 0x00))
@@ -63,14 +65,15 @@
 
 #define GPIOA_MODER                 (*(volatile uint32_t *)(GPIOA_BASE + 0x00UL))
 #define GPIOA_OTYPER                (*(volatile uint32_t *)(GPIOA_BASE + 0x04UL))
+#define GPIOA_OSPEEDR               (*(volatile uint32_t *)(GPIOA_BASE + 0x08UL))
+#define GPIOA_BSRR                  (*(volatile uint32_t *)(GPIOA_BASE + 0x18UL))
 #define GPIOA_AFRL                  (*(volatile uint32_t *)(GPIOA_BASE + 0x20UL))
 #define GPIOA_AFRH                  (*(volatile uint32_t *)(GPIOA_BASE + 0x24UL))
-#define GPIOA_OSPEEDR               (*(volatile uint32_t *)(GPIOA_BASE + 0x08UL))
 
 #define GPIOB_MODER                 (*(volatile uint32_t *)(GPIOB_BASE + 0x00UL))
 #define GPIOB_OTYPER                (*(volatile uint32_t *)(GPIOB_BASE + 0x04UL))
-#define GPIOB_AFRL                  (*(volatile uint32_t *)(GPIOB_BASE + 0x20UL))
 #define GPIOB_OSPEEDR               (*(volatile uint32_t *)(GPIOB_BASE + 0x08UL))
+#define GPIOB_AFRL                  (*(volatile uint32_t *)(GPIOB_BASE + 0x20UL))
 
 /* First set of pins */
 #define GPIOA_SPI1_NSS_Pin_Pos1                 4U
@@ -100,5 +103,13 @@ typedef enum
     SPI1_PINS_PA4_PA5_PA6_PA7,
     SPI1_PINS_PA15_PB3_PB4_PB5
 } SPI1_PinConfig;
+
+
+/*
+1. tx_data: The byte to be transmitted.
+2. rx_data: The address where the received byte will be stored.
+3. The return value indicates whether the exchange completed successfully.
+*/
+SPI_Status SPI1_TransmitReceive(uint8_t tx_data, uint8_t *rx_data);
 
 #endif

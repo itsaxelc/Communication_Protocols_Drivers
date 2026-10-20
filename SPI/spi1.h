@@ -110,6 +110,8 @@ typedef enum
 2. rx_data: The address where the received byte will be stored.
 3. The return value indicates whether the exchange completed successfully.
 */
-SPI_Status SPI1_TransmitReceive(uint8_t tx_data, uint8_t *rx_data);
+
+SPI_Status SPI1_Init(SPI1_PinConfig pin_cfg);
+SPI_Status SPI1_TransmitReceive(const uint8_t *tx_data, uint8_t *rx_data, uint32_t length);
 
 #endif

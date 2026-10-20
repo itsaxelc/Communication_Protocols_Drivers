@@ -53,7 +53,7 @@ static SPI_Status SPI1_CheckErrors(void)
 {
     uint32_t sr = SPI1_SR;
     if ((sr & SPI1_SR_MODF_Msk) != 0U){
-        /* MODF is cleared by reading SR, then writing CR1 */
+        /* Clear MODF: SR has been read; write CR1 */
         SPI1_CR1 = SPI1_CR1;
         return SPI_ERROR;
     }
@@ -96,6 +96,9 @@ static void SPI1_AbortTransfer(void)
 
 SPI_Status SPI1_Init(SPI1_PinConfig pin_cfg)
 {
+    if ((pin_cfg != SPI1_PINS_PA4_PA5_PA6_PA7) && (pin_cfg != SPI1_PINS_PA15_PB3_PB4_PB5)){
+        return SPI_ERROR;
+    }
     /* Enable GPIO clocks */
     RCC_AHB2ENR |= RCC_AHB2ENR_GPIOAEN_Msk;
     if (pin_cfg == SPI1_PINS_PA15_PB3_PB4_PB5)
@@ -133,7 +136,7 @@ SPI_Status SPI1_Init(SPI1_PinConfig pin_cfg)
         GPIOA_OSPEEDR &= ~(0xFFU << (GPIOA_SPI1_NSS_Pin_Pos1 * 2U));
         GPIOA_OSPEEDR |=  (0xAAU << (GPIOA_SPI1_NSS_Pin_Pos1 * 2U));
     }
-    else if (pin_cfg == SPI1_PINS_PA15_PB3_PB4_PB5)
+    else
     {
         /* PA15: NSS software, GPIO output */
         GPIOA_MODER &= ~(3U << (GPIOA_SPI1_NSS_Pin_Pos2 * 2U));
@@ -156,7 +159,6 @@ SPI_Status SPI1_Init(SPI1_PinConfig pin_cfg)
         GPIOB_OSPEEDR &= ~(0x3FU << (GPIOB_SPI1_SCK_Pin_Pos2 * 2U));
         GPIOB_OSPEEDR |=  (0x2AU << (GPIOB_SPI1_SCK_Pin_Pos2 * 2U));
     }
-    else return SPI_ERROR;
 
     /* SPI1 configuration continues below */
     /* CR1: master, software NSS, mode 0, clock prescaler */
@@ -180,10 +182,33 @@ SPI_Status SPI1_Init(SPI1_PinConfig pin_cfg)
 4: Read SPI1_DR to retrieve the received byte.
 5: Wait until BSY = 0: the transmission is complete.
 */
+
+/**
+    @brief Transmits and receives data over SPI1.
+
+    Exchanges a specified number of bytes with the selected SPI slave.
+    Transmission and reception occur simultaneously. If tx_data is NULL,
+    dummy bytes (0xFF) are transmitted. If rx_data is NULL, received bytes are discarded.
+
+    The NSS signal is driven low before the exchange and driven high
+    after the transfer completes or an error occurs.
+ 
+    @param[in]  tx_data Pointer to the transmit buffer, or NULL to transmit dummy bytes (0xFF).
+    @param[out] rx_data Pointer to the receive buffer, or NULL to discard received bytes.
+    @param[in]  length  Number of bytes to exchange. Must be greater than zero.
+ 
+    @return SPI_OK      Transfer completed successfully.
+    @return SPI_ERROR   Invalid transfer length.
+    @return SPI_TIMEOUT A timeout occurred while waiting for the SPI peripheral.
+
+    @note At least one of tx_data or rx_data may be NULL.
+    @note The SPI peripheral must be initialized before calling this function.
+    @note The slave must support keeping NSS low for the entire transfer.
+*/
 SPI_Status SPI1_TransmitReceive(const uint8_t *tx_data, uint8_t *rx_data, uint32_t length)
 {
     SPI_Status status;
-    if ((tx_data == NULL) || (rx_data == NULL) || (length == 0U)) return SPI_ERROR;
+    if (length == 0U) return SPI_ERROR;
 
     status = SPI1_CheckErrors();
     if (status != SPI_OK) return status;
@@ -200,15 +225,16 @@ SPI_Status SPI1_TransmitReceive(const uint8_t *tx_data, uint8_t *rx_data, uint32
         status = SPI1_WaitForTXE(SPI1_WAIT_LIMIT);
         if (status != SPI_OK)   goto error;
 
-        /* Transmit one byte */
-        SPI1_DR = tx_data[i];
+        /* Transmit real data or a dummy byte */
+        SPI1_DR = (tx_data != NULL) ? tx_data[i] : 0xFFU;
 
         /* Wait until one byte is received */
         status = SPI1_WaitForRXNE(SPI1_WAIT_LIMIT);
         if (status != SPI_OK)   goto error;
 
-        /* Store the received byte */
-        rx_data[i] = SPI1_DR;
+        uint8_t received = SPI1_DR;
+
+        if (rx_data != NULL)    rx_data[i] = received;
     }
 
     /* Wait until the SPI peripheral is no longer busy */

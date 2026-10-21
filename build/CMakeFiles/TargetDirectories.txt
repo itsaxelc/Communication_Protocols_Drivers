@@ -1,3 +1,0 @@
-D:/Communication_Protocols/build/CMakeFiles/i2c_test.dir
-D:/Communication_Protocols/build/CMakeFiles/edit_cache.dir
-D:/Communication_Protocols/build/CMakeFiles/rebuild_cache.dir

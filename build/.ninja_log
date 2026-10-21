@@ -1,6 +1,0 @@
-# ninja log v7
-105	820	8136818037427993	CMakeFiles/i2c_test.dir/UART/usart2.c.obj	3b328118b6c9ee44
-202	825	8136818038390039	CMakeFiles/i2c_test.dir/system.c.obj	865cda57ab413901
-402	911	8136818040391657	CMakeFiles/i2c_test.dir/startup_stm32l476xx.s.obj	60b567e99ab3bf0b
-16	529	8136818785123066	CMakeFiles/i2c_test.dir/main.c.obj	34f564c4cd223d1
-530	2703	8136818790264746	i2c_test.elf	a75fc84ed03cc351

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/gcc-arm-none-eabi.cmake)
-project(i2c_test C ASM)
+project(communication_protocols C ASM)
 
 set(CMAKE_C_STANDARD 11)
 

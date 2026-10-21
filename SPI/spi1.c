@@ -250,3 +250,15 @@ error:
     SPI1_NSS_High();
     return status;
 }
+
+
+/*
+    Example: Reading a register using SPI1_TransmitReceive().
+ 
+    tx_data[0]: Register read command (1 for "Reading" + register address).
+    tx_data[1]: Dummy byte to generate clock pulses for data reception.
+    rx_data[0]: Byte received during command transmission.
+    rx_data[1]: Potential register value.
+ 
+    Note: The command format, data position, and dummy byte value depend on the SPI device protocol.
+*/

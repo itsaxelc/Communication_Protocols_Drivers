@@ -1,5 +1,5 @@
-#ifndef USART_1
-#define USART_1
+#ifndef USART_2
+#define USART_2
 
 #include <stdint.h>
 

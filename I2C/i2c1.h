@@ -29,7 +29,7 @@
 #define I2C_ISR_ARLO_Pos    9U
 #define I2C_ISR_OVR_Pos     10U
 #define I2C_ISR_RXNE_Pos    2U
-#define I2C_ISR_TC_Pos      8U
+#define I2C_ISR_TC_Pos      6U
 
 #define I2C_ICR_STOPCF_Pos    5U
 #define I2C_ICR_NACKCF_Pos    4U

@@ -29,7 +29,7 @@
 #define I2C_ISR_ARLO_Pos    9U
 #define I2C_ISR_OVR_Pos     10U
 #define I2C_ISR_RXNE_Pos    2U
-#define I2C_ISR_TC_Pos      8U
+#define I2C_ISR_TC_Pos      6U
 
 #define I2C_ICR_STOPCF_Pos    5U
 #define I2C_ICR_NACKCF_Pos    4U
@@ -65,12 +65,12 @@
 #define RCC_CCIPR                   (*(volatile uint32_t *)(RCC_BASE + 0x88UL))
 #define RCC_APB1ENR1                (*(volatile uint32_t *)(RCC_BASE + 0x58UL))
 #define RCC_AHB2ENR                 (*(volatile uint32_t *)(RCC_BASE + 0x4CUL))
-#define RCC_APB1ENR1_I2C3EN_Pos     21U
+#define RCC_APB1ENR1_I2C3EN_Pos     23U
 #define RCC_APB1ENR1_I2C3EN_Msk     (1 << RCC_APB1ENR1_I2C3EN_Pos)
 #define RCC_AHB2ENR_GPIOCEN_Pos     1U
 #define RCC_AHB2ENR_GPIOCEN_Msk     (1 << RCC_AHB2ENR_GPIOCEN_Pos)
-#define RCC_CCIPR_I2C3SEL_Pos       12U
-#define RCC_CCIPR_I2C3SEL_Msk       (1 << RCC_CCIPR_I2C3SEL_Pos)
+#define RCC_CCIPR_I2C3SEL_Pos       16U
+#define RCC_CCIPR_I2C3SEL_Msk       (3U << RCC_CCIPR_I2C3SEL_Pos)
 
 #define GPIOC_BASE                  0x48000800
 #define GPIOC_MODER                 (*(volatile uint32_t *)(GPIOC_BASE + 0x00UL))

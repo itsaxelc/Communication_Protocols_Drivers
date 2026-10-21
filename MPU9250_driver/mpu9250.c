@@ -1,5 +1,7 @@
 #include "mpu9250.h"
 #include "ak8963.h"
+#include<stddef.h>
+
 #define MPU9250_GRAVITY            9.80665f
 
 /* Forward declaration of static functions */

@@ -3,6 +3,9 @@
 
 AK8963_Sensitivity sensitivity;
 
+static I2C_Status AK8963_ReadRegister(uint8_t reg, uint8_t *value);
+static I2C_Status AK8963_WriteRegister(uint8_t reg, uint8_t value);
+
 I2C_Status AK8963_ReadWhoAmI(uint8_t *id)
 {
     return AK8963_ReadRegister(AK8963_REG_WHO_AM_I, id);
@@ -73,6 +76,8 @@ static I2C_Status AK8963_GetRawData(AK8963_RawData *raw_data){
         }
         else return I2C_ERROR;
     }
+
+    return I2C_OK;
 }
 
 I2C_Status AK8963_GetData(AK8963_Data *data){
@@ -89,6 +94,7 @@ I2C_Status AK8963_GetData(AK8963_Data *data){
         data->HZ=raw_data.HZ_raw * 0.15f;
     }
     else return I2C_ERROR;
+    return I2C_OK;
 }
 
 static I2C_Status AK8963_ReadRegister(uint8_t reg, uint8_t *value)

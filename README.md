@@ -118,11 +118,19 @@ The firmware is produced in `build/` as `communication_protocols.elf`.
 
 ## Flash
 
-With OpenOCD and the on-board ST-Link:
+### Option 1: OpenOCD
 
 ```
-openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program build/communication_protocols.elf verify reset exit"
+openocd -f interface/stlink.cfg -f target/stm32l4x.cfg -c "program build/Debug/communication_protocols.elf verify reset exit"
 ```
+
+### Option 2: STM32CubeProgrammer
+
+```
+STM32_Programmer_CLI -c port=SWD -w build/Debug/communication_protocols.elf -v -rst
+```
+
+`STM32_Programmer_CLI` is installed with [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html) (in its `bin` folder, add it to your `PATH`).
 
 ## Debug
 
